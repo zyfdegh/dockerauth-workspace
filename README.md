@@ -66,10 +66,10 @@ See how to [solve][6].
 
 ```sh
 GET
-https://192.168.10.187:5001/auth?account=admin@email.com&client_id=docker&offline_token=true&service=my.docker.registry
+https://192.168.10.187:5001/auth?account=admin&client_id=docker&offline_token=true&service=my.docker.registry
 
 Basic Auth
-admin@email.com
+admin
 linker
 ```
 
@@ -82,7 +82,7 @@ Otherwise, an `x509` error will occur.
 
 ```sh
 docker login 192.168.10.187:5000
-Username: admin@email.com
+Username: admin
 Password: linker
 ```
 
