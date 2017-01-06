@@ -1,0 +1,27 @@
+version: 0.1
+log:
+  fields:
+    service: registry
+storage:
+    cache:
+        blobdescriptor: inmemory
+    filesystem:
+        rootdirectory: /var/lib/registry
+http:
+    addr: :5000
+    headers:
+        X-Content-Type-Options: [nosniff]
+    tls:
+      certificate: /ssl/registry.pem
+      key: /ssl/registry.key
+health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3
+auth:
+  token:
+    realm: "https://192.168.10.187:5001/auth"
+    service: "my.docker.registry"
+    issuer: "Linker IOT auth server"
+    rootcertbundle: /ssl/server.pem

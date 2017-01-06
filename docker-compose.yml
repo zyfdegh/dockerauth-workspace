@@ -1,0 +1,23 @@
+authserver:
+  image: zyfdedh/mockauthserver
+  ports:
+    - "8080:8080"
+
+dockerauth:
+  image: zyfdedh/docker_auth
+  ports:
+    - "5001:5001"
+  volumes:
+    - "./config:/config:ro"
+    - "./logs:/logs:rw"
+    - "./ssl:/ssl:ro"
+  command: --v=2 --alsologtostderr /config/auth_config.yml
+
+registry:
+  image: registry:2
+  ports:
+    - "5000:5000"
+  volumes:
+    - "./ssl:/ssl:ro"
+    - "./registry/data:/var/lib/registry:rw"
+    - "./registry/conf:/etc/docker/registry:ro"
