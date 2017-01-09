@@ -13,9 +13,9 @@ services:
       depends_on:
         - couchdb
       environment:
-        - COUCHDB_URL="http://192.168.10.187:5984/"
-#        - COUCHDB_USER="admin"
-#        - COUCHDB_PASS="password"
+        - COUCHDB_URL=http://192.168.10.187:5984/
+#        - COUCHDB_USER=admin
+#        - COUCHDB_PASS=password
 
     dockerauth:
       image: zyfdedh/docker_auth
