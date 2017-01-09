@@ -70,7 +70,7 @@ https://192.168.10.187:5001/auth?account=admin&client_id=docker&offline_token=tr
 
 Basic Auth
 admin
-linker
+secret123
 ```
 
 ### docker login
@@ -83,7 +83,7 @@ Otherwise, an `x509` error will occur.
 ```sh
 docker login 192.168.10.187:5000
 Username: admin
-Password: linker
+Password: secret123
 ```
 
 # References
@@ -93,9 +93,19 @@ Password: linker
 
 [Creating Private Docker Registry 2.0 with Token...][2]: Main referenced article(blog).
 
+# Related repos
+[cesanta/docker_auth][3]
+
+[zyfdegh/docker_auth][4]
+
+[zyfdedh/couchdb-init][7]
+
+
 [1]: https://github.com/kwk/docker-registry-setup
 [2]: https://the.binbashtheory.com/creating-private-docker-registry-2-0-with-token-authentication-service/
 [3]: https://github.com/cesanta/docker_auth
 [4]: https://github.com/zyfdegh/docker_auth
 [5]: https://github.com/zyfdegh/mockauthserver
 [6]: http://blog.getpostman.com/2014/01/28/using-self-signed-certificates-with-postman/
+[7]: https://github.com/zyfdegh/couchdb-init
+
