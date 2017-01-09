@@ -158,9 +158,9 @@ couchdb_auth:
     # http://guide.couchdb.org/draft/views.html
     view: "getByUsername"
     # The username with which to connect to the CouchDB server.
-    username: "admin"
+    username: ""
     # The password with which to connect to the CouchDB server.
-    password: "password3"
+    password: ""
 
 # External authentication - call an external progam to authenticate user.
 # Username and password are passed to command's stdin and exit code is examined.
@@ -296,9 +296,9 @@ acl_couchdb:
     # http://guide.couchdb.org/draft/views.html
     view: "getBySeq"
     # The username with which to connect to the CouchDB server.
-    username: "admin"
+    username: ""
     # The password with which to connect to the CouchDB server.
-    password: "password3"
+    password: ""
   # Specify how long an ACL remains valid before they will be fetched again from
   # the CouchDB server.
   # (See https://golang.org/pkg/time/#ParseDuration for a format description.)
