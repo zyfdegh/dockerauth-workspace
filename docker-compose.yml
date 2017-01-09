@@ -1,23 +1,37 @@
-authserver:
-  image: zyfdedh/mockauthserver
-  ports:
-    - "8080:8080"
+version: '2'
+services:
+    couchdb:
+      image: couchdb:1.6.1
+      ports:
+        - "5984:5984"
+      environment:
+        - COUCHDB_USER=admin
+        - COUCHDB_PASSWORD=password3
 
-dockerauth:
-  image: zyfdedh/docker_auth
-  ports:
-    - "5001:5001"
-  volumes:
-    - "./config:/config:ro"
-    - "./logs:/logs:rw"
-    - "./ssl:/ssl:ro"
-  command: --v=2 --alsologtostderr /config/auth_config.yml
+    couchdb-init:
+      image: zyfdedh/couchdb-init
+      depends_on:
+        - couchdb
 
-registry:
-  image: registry:2
-  ports:
-    - "5000:5000"
-  volumes:
-    - "./ssl:/ssl:ro"
-    - "./registry/data:/var/lib/registry:rw"
-    - "./registry/conf:/etc/docker/registry:ro"
+    dockerauth:
+      image: zyfdedh/docker_auth
+      ports:
+        - "5001:5001"
+      volumes:
+        - "./config:/config:ro"
+        - "./logs:/logs:rw"
+        - "./ssl:/ssl:ro"
+      command: --v=2 --alsologtostderr /config/auth_config.yml
+      depends_on:
+          - couchdb
+          - registry
+      restart: always
+
+    registry:
+      image: registry:2
+      ports:
+        - "5000:5000"
+      volumes:
+        - "./ssl:/ssl:ro"
+        - "./registry/data:/var/lib/registry:rw"
+        - "./registry/conf:/etc/docker/registry:ro"
