@@ -1,21 +1,9 @@
 version: '2'
 services:
-    couchdb:
-      image: couchdb:1.6.1
+    authserver:
+      image: zyfdedh/mockauthserver
       ports:
-        - "5984:5984"
-#      environment:
-#        - COUCHDB_USER=admin
-#        - COUCHDB_PASSWORD=password3
-
-    couchdb-init:
-      image: zyfdedh/couchdb-init
-      depends_on:
-        - couchdb
-      environment:
-        - COUCHDB_URL=http://192.168.10.187:5984/
-#        - COUCHDB_USER=admin
-#        - COUCHDB_PASS=password
+        - "8080:8080"
 
     dockerauth:
       image: zyfdedh/docker_auth
@@ -27,9 +15,10 @@ services:
         - "./ssl:/ssl:ro"
       command: --v=2 --alsologtostderr /config/auth_config.yml
       depends_on:
-          - couchdb
-          - registry
-      restart: always
+        - authserver
+        - registry
+      environment:
+        - AUTH_API_ENDPOINT=192.168.10.187:8080
 
     registry:
       image: registry:2
@@ -39,3 +28,4 @@ services:
         - "./ssl:/ssl:ro"
         - "./registry/data:/var/lib/registry:rw"
         - "./registry/conf:/etc/docker/registry:ro"
+
