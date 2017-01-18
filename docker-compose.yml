@@ -1,9 +1,27 @@
 version: '2'
 services:
-    authserver:
-      image: zyfdedh/mockauthserver
+    couchdb:
+      image: couchdb:1.6.1
       ports:
-        - "8080:8080"
+        - "5984:5984"
+      environment:
+        - COUCHDB_USER=admin
+        - COUCHDB_PASSWORD=1234qwer
+
+    iotserver:
+      image: linkeriot/iot-server
+      ports:
+        - "3000:3000"
+      environment:
+        - NODE_ENV=production
+        - IOT_SERVER_PORT=3000
+        - REPOSITORY=https://192.168.10.187:5000
+#        - SECRET=linkeriot@linkernetworks
+#        - WEB_NONCE=linkeriot@forportal
+#        - WEB_SECRET=3a8ef67d5ad4fb0ab4ef382006d337470c7fb53b0c434742b93fddb92e0dab54
+        - IOT_COUCHDB=192.168.10.187
+      depends_on:
+        - couchdb
 
     dockerauth:
       image: zyfdedh/docker_auth
@@ -15,10 +33,10 @@ services:
         - "./ssl:/ssl:ro"
       command: --v=2 --alsologtostderr /config/auth_config.yml
       depends_on:
-        - authserver
+        - iotserver
         - registry
       environment:
-        - AUTH_API_ENDPOINT=192.168.10.187:8080
+        - AUTH_API_ENDPOINT=192.168.10.187:3000
 
     registry:
       image: registry:2
