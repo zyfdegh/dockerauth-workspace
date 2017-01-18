@@ -9,7 +9,7 @@ services:
         - COUCHDB_PASSWORD=1234qwer
 
     iotserver:
-      image: linkeriot/iot-server
+      image: zyfdedh/iot-server:dev
       ports:
         - "3000:3000"
       environment:
