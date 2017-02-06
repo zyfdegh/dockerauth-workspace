@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: iot-server
+  labels:
+    app: iot-server
+    tier: iot-server
+spec:
+  ports:
+    # the port that this service should serve on
+  - port: 3000
+    targetPort: 3000
+  type: LoadBalancer
+  selector:
+    app: iot-server
+    tier: iot-server
+  sessionAffinity: ClientIP
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: iot-server
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: iot-server
+        tier: iot-server
+    spec:
+      containers:
+      - name: iot-server
+        # image: peihsinsu/simpleweb:x86 
+        image: zyfdedh/iot-server:dev
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: IOT_SERVER_PORT
+          value: "3000"
+        - name: REPOSITORY
+          value: iot-registry:5000
+        - name: SECRET
+          value: linkeriot@linkernetworks
+        - name: WEB_NONCE
+          value: linkeriot@forportal
+        - name: WEB_SECRET
+          value: "3a8ef67d5ad4fb0ab4ef382006d337470c7fb53b0c434742b93fddb92e0dab54"
+        - name: GET_HOSTS_FROM
+          value: dns
+        - name: IOT_COUCHDB
+          value: iot-couchdb

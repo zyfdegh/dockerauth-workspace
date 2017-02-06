@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: iot-dockerauth
+  labels:
+    app: dockerauth
+    tier: iot-dockerauth
+spec:
+  ports:
+    # the port that this service should serve on
+  - port: 5001
+    targetPort: 5001
+  type: LoadBalancer
+  selector:
+    app: dockerauth
+    tier: iot-dockerauth
+  sessionAffinity: ClientIP
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: iot-dockerauth
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dockerauth
+        tier: iot-dockerauth
+    spec:
+      containers:
+      - name: dockerauth
+        # image: peihsinsu/simpleweb:x86
+        image: zyfdedh/docker_auth
+        args: ["--v=2", "--alsologtostderr", "/config/auth_config.yml"]
+        ports:
+        - containerPort: 5001
+        env:
+        - name: AUTH_API_ENDPOINT
+          value: iot-server:3000
+        - name: GET_HOSTS_FROM
+          value: dns
+        volumeMounts:
+          - name: authconf-storage
+            mountPath: /config
+            readOnly: true
+          - name: authcert-storage
+            mountPath: /ssl
+            readOnly: true
+      volumes:
+        - name: authconf-storage
+          hostPath:
+            path: /tmp/volumes/iot-dockerauth/conf
+        - name: authcert-storage
+          hostPath:
+            path: /tmp/volumes/iot-dockerauth/ssl
