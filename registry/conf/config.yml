@@ -25,3 +25,12 @@ auth:
     service: "my.docker.registry"
     issuer: "Linker IOT auth server"
     rootcertbundle: /ssl/server.pem
+notifications:
+  endpoints:
+    - name: alistener
+      url: http://iot-server:3000/registry/notification
+      headers:
+        Authorization: [Bearer <your token, if needed>]
+      timeout: 500ms
+      threshold: 5
+      backoff: 1s
